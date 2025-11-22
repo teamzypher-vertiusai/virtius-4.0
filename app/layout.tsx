@@ -6,8 +6,11 @@ import { Providers } from "@/components/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Virtius 4.0 - Next.js Application",
-    description: "Built with Next.js 14, TypeScript, Tailwind CSS, and shadcn/ui",
+    title: "Virtius AI - Advanced Image Protection Platform",
+    description: "Protect your images from AI scraping with advanced cryptographic signing, binary manipulation, and AI cloaking technology",
+    icons: {
+        icon: '/favicon.png',
+    },
 };
 
 export default function RootLayout({

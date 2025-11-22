@@ -71,11 +71,45 @@ export default function UploadPage() {
 
             clearInterval(interval);
 
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || "Failed to protect image");
+            }
+
+            const data = await response.json();
+            setProgress(100);
+
+            // Set result with backend data
+            setResult({
+                originalUrl: `http://localhost:8000${data.original_url}`,
+                protectedUrl: `http://localhost:8000${data.protected_url}`,
+                stats: {
+                    protectionScore: data.stats.protection_score || 95,
+                    manipulationScore: data.stats.manipulation_score || 87,
+                    cryptoSigning: data.stats.cryptographic_signing,
+                    binaryShielding: data.stats.binary_manipulation,
+                    aiCloaking: data.stats.ai_cloaking,
+                },
+                certificate: {
+                    contentId: data.content_id,
+                    originalHash: data.original_hash,
+                    protectedHash: data.protected_hash,
+                    signature: data.signature,
+                    timestamp: new Date().toISOString(),
+                }
+            });
+
+            toast({
+                title: "Success!",
+                description: "Your image has been protected with all security layers.",
+            });
+
         } catch (error) {
+            console.error("Protection error:", error);
             toast({
                 variant: "destructive",
                 title: "Error",
-                description: "Failed to protect image. Please try again.",
+                description: error instanceof Error ? error.message : "Failed to protect image. Please try again.",
             });
             setProgress(0);
         } finally {

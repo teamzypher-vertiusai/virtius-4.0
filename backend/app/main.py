@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.api import auth, protect, verify, users
 from prisma import Prisma
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(title="Virtius 4.0 API")
 
@@ -13,6 +18,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Create directories if they don't exist
+os.makedirs("uploads", exist_ok=True)
+os.makedirs("protected", exist_ok=True)
+
+# Mount static files for serving protected images
+app.mount("/static/protected", StaticFiles(directory="protected"), name="protected")
+app.mount("/static/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Database Connection
 prisma = Prisma()

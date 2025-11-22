@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider = "prisma-client-js"
-}
 
 generator pyclient {
   provider             = "prisma-client-py"
@@ -13,7 +10,7 @@ generator pyclient {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://neondb_owner:npg_92yTBPZvNRDW@ep-fragrant-pond-ag2vl2a8-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require"
 }
 
 model User {

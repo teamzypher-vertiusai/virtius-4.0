@@ -8,4 +8,5 @@ pynacl==1.5.0
 pillow==10.2.0
 numpy==1.26.3
 cryptography==42.0.2
+aiofiles==23.2.1
 # fawkes-protect # Commented out for now, will check availability or use alternative

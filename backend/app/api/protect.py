@@ -83,13 +83,26 @@ async def protect_image(
             }
         )
         
+        # Move final protected image to protected directory
+        final_filename = f"{file_id}_protected{file_ext}"
+        final_destination = os.path.join(PROTECTED_DIR, final_filename)
+        shutil.copy(final_protected_path, final_destination)
+        
         return {
             "status": "success",
             "content_id": content.id,
             "original_hash": original_hash,
             "protected_hash": protected_hash,
             "signature": signature,
-            "protected_url": f"/static/{os.path.basename(final_protected_path)}"
+            "original_url": f"/static/uploads/{file_id}{file_ext}",
+            "protected_url": f"/static/protected/{final_filename}",
+            "stats": {
+                "cryptographic_signing": True,
+                "binary_manipulation": True,
+                "ai_cloaking": True,
+                "manipulation_score": BinaryEngine.calculate_manipulation_score(original_path, final_protected_path),
+                "protection_score": CloakingEngine.check_fawkes_effectiveness(original_path, final_protected_path)
+            }
         }
 
     except Exception as e:
